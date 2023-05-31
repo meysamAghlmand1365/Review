@@ -9,12 +9,16 @@ import azki.product.review.service.ICommentService;
 import azki.product.review.service.IOrderService;
 import azki.product.review.service.IRateService;
 import azki.product.review.service.IReviewService;
+import jakarta.validation.Valid;
+import jakarta.validation.Validation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import javax.xml.validation.Validator;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,8 +79,9 @@ public class ReviewServiceImpl implements IReviewService {
 
     @Transactional
     @Override
-    public boolean registerCommentAndRate(RateCommentRequest request){
+    public boolean registerCommentAndRate( RateCommentRequest request){
          if(request.getCommentDto()!=null){
+
              commentService.saveComment(request.getCommentDto());
          }
 

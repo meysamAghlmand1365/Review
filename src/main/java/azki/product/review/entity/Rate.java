@@ -3,14 +3,16 @@ package azki.product.review.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @Entity
 @Table(name = "rate_tbl")
 public class Rate {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "product_id")
@@ -25,7 +27,10 @@ public class Rate {
 
 
     @Column(name = "created_date" )
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
+
+    @Column(name = "created_time" )
+    private LocalTime createdTime;
 
 
 }

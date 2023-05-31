@@ -4,6 +4,7 @@ import azki.product.review.dao.IRateDao;
 import azki.product.review.dto.RateDto;
 import azki.product.review.entity.Rate;
 import azki.product.review.service.IRateService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,8 @@ public class RateServiceImpl implements IRateService {
     }
 
     @Override
-    public Rate saveRate(RateDto rateDto){
+    public Rate saveRate( RateDto rateDto){
+        rateDto.setId(null);
         rateDto.setConfirmStatus(null);
         return rateDao.saveAndFlush(modelMapper.map(rateDto,Rate.class));
     }

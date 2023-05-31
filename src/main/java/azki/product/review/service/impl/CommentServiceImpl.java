@@ -4,6 +4,7 @@ import azki.product.review.dao.ICommentDao;
 import azki.product.review.dto.CommentDto;
 import azki.product.review.entity.Comment;
 import azki.product.review.service.ICommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,8 @@ public class CommentServiceImpl implements ICommentService {
 
 
     @Override
-    public Comment saveComment(CommentDto dto){
+    public Comment saveComment( CommentDto dto){
+        dto.setId(null);
         dto.setConfirmStatus(null);
         return commentDao.saveAndFlush(modelMapper.map(dto, Comment.class));
     }
