@@ -5,19 +5,10 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
-import static azki.product.review.constant.StateValue.STATE_NOT_CHECKED;
-
-public class CommentSpecifications {
-
+public class RateSpecification {
     public static Specification<Comment> notChecked(){
         return (root,query,builder)->{
-            return builder.equal(root.get("status"), STATE_NOT_CHECKED);
-        };
-    }
-
-    public static Specification<Comment> productIdIs(Long productId){
-        return (root,query,builder)->{
-            return builder.equal(root.get("productId"), STATE_NOT_CHECKED);
+            return root.get("status").isNull();
         };
     }
 

@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static azki.product.review.constant.StateValue.STATE_CONFIRM;
+import static azki.product.review.constant.StateValue.STATE_NOT_CHECKED;
+
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements ICommentService {
@@ -31,22 +34,18 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public Long countAllConfirmedComment(Long productId){
-        return commentDao.countAllByConfirmStatusTrueAndProductIdIs(productId);
+        return commentDao.countAllByStatusAndProductId(STATE_CONFIRM,productId);
     }
 
 
     @Override
     public Comment saveComment( CommentDto dto){
         dto.setId(null);
-        dto.setConfirmStatus(null);
+        dto.setStatus(STATE_NOT_CHECKED);
         return commentDao.saveAndFlush(modelMapper.map(dto, Comment.class));
     }
 
-   /* @Override
-    public GenericPageableList<Comment> fetchAllNotCheckedComment(BasePageableRequestDto dto){
-        return new GenericPageableList<>(commentDao.findAllByConfirmStatusIsNull(PageRequest.of(dto.getPageNum(), dto.getPageNum()))
-                .stream().map(a->modelMapper.map(a,Comment.class)).collect(Collectors.toList()));
-    }*/
+
 
 
     @Override
@@ -61,7 +60,7 @@ public class CommentServiceImpl implements ICommentService {
     public CommentDto updateComment(Long id, CommentDto commentDto){
         Optional<Comment> comment =commentDao.findById(id);
         if(comment.isPresent()){
-            comment.get().setConfirmStatus(commentDto.getConfirmStatus());
+            comment.get().setStatus(commentDto.getStatus());
             return modelMapper.map(commentDao.saveAndFlush(comment.get()),CommentDto.class);
         }else{
           throw new EntityNotFoundException(ErrorMessage.ID+id.toString()+ ErrorMessage.NOT_FOUND);

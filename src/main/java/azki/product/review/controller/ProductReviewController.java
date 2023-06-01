@@ -2,15 +2,13 @@ package azki.product.review.controller;
 
 
 import azki.product.review.constant.ApiMethodNames;
-import azki.product.review.dto.CommentDto;
-import azki.product.review.dto.FetchCommentRequest;
+import azki.product.review.dto.*;
 import azki.product.review.dto.request.BasePageableRequestDto;
-import azki.product.review.dto.GenericPageableList;
-import azki.product.review.dto.ProductDto;
 import azki.product.review.dto.request.RateCommentRequest;
 import azki.product.review.dto.request.ReviewRequest;
 import azki.product.review.dto.response.ProductReviewDetailResponse;
 import azki.product.review.service.ICommentService;
+import azki.product.review.service.IRateService;
 import azki.product.review.service.IReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +26,8 @@ public class ProductReviewController {
     private final IReviewService reviewService;
 
     private final ICommentService commentService;
+
+    private final IRateService rateService;
 
     @GetMapping(path = ApiMethodNames.FETCH_ALL_PRODUCTS)
     public ResponseEntity<GenericPageableList<ProductDto>> fetchAllRepresentableProducts(@RequestBody BasePageableRequestDto request){
@@ -52,6 +52,11 @@ public class ProductReviewController {
     @PutMapping("/comment/{id}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable("id") long id,@RequestBody CommentDto dto){
         return new ResponseEntity<>(commentService.updateComment(id,dto),HttpStatus.OK);
+    }
+
+    @PutMapping("/rate/{id}")
+    public ResponseEntity<RateDto> updateComment(@PathVariable("id") long id,@RequestBody RateDto dto){
+        return new ResponseEntity<>(rateService.updateRate(id,dto),HttpStatus.OK);
     }
 
 

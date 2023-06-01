@@ -17,7 +17,7 @@ public class CommentDto {
 
     private LocalDate createdDate;
     private LocalTime createdTime;
-    private Boolean confirmStatus;
+    private byte status;
 
     @NotBlank
     private String content;

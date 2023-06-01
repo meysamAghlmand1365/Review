@@ -16,8 +16,8 @@ public class Comment {
 
     @Column(name = "product_id")
     private Long productId;
-    @Column(name = "confirm_status")
-    private Boolean confirmStatus;
+    @Column(name = "status")
+    private byte status;
     @Column(name = "content")
     private String content;
     @Column(name = "user_id")
