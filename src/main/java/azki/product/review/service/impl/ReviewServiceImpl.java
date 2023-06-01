@@ -7,6 +7,7 @@ import azki.product.review.dto.request.BasePageableRequestDto;
 import azki.product.review.dto.request.RateCommentRequest;
 import azki.product.review.dto.request.ReviewRequest;
 import azki.product.review.dto.response.ProductReviewDetailResponse;
+import azki.product.review.entity.Comment;
 import azki.product.review.entity.Product;
 import azki.product.review.service.ICommentService;
 import azki.product.review.service.IOrderService;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,6 +100,9 @@ public class ReviewServiceImpl implements IReviewService {
         Page<CommentDto> page=commentService.fetchComment(CommentSpecifications.notChecked().and(CommentSpecifications.fromDate(commentRequest.getFromDate())),commentRequest);
         return new GenericPageableList<>(page.toList(),page.getTotalPages(), page.getTotalElements());
     }
+
+
+
 
 
 

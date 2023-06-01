@@ -10,6 +10,7 @@ import azki.product.review.dto.ProductDto;
 import azki.product.review.dto.request.RateCommentRequest;
 import azki.product.review.dto.request.ReviewRequest;
 import azki.product.review.dto.response.ProductReviewDetailResponse;
+import azki.product.review.service.ICommentService;
 import azki.product.review.service.IReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,8 @@ import static azki.product.review.constant.ApiServiceNames.REVIEW;
 public class ProductReviewController {
 
     private final IReviewService reviewService;
+
+    private final ICommentService commentService;
 
     @GetMapping(path = ApiMethodNames.FETCH_ALL_PRODUCTS)
     public ResponseEntity<GenericPageableList<ProductDto>> fetchAllRepresentableProducts(@RequestBody BasePageableRequestDto request){
@@ -44,6 +47,11 @@ public class ProductReviewController {
     @PostMapping(path = ApiMethodNames.REGISTER_COMMENT_AND_RATE)
     public ResponseEntity<Boolean> registerCommentAndRateNumber(@Valid @RequestBody RateCommentRequest request){
         return new ResponseEntity<>( reviewService.registerCommentAndRate(request),HttpStatus.OK);
+    }
+
+    @PutMapping("/comment/{id}")
+    public ResponseEntity<CommentDto> updateComment(@PathVariable("id") long id,@RequestBody CommentDto dto){
+        return new ResponseEntity<>(commentService.updateComment(id,dto),HttpStatus.OK);
     }
 
 

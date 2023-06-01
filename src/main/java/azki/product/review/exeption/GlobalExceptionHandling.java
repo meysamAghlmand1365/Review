@@ -1,5 +1,6 @@
 package azki.product.review.exeption;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +34,11 @@ public class GlobalExceptionHandling {
     }
 
 
-    /*@ExceptionHandler(RuntimeException.class)
-    public final ResponseEntity<Map<String, List<String>>> handleRuntimeExceptions(RuntimeException ex) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public final ResponseEntity<Map<String, List<String>>> handleRuntimeExceptions(EntityNotFoundException ex) {
         List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }*/
+        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
 
     private Map<String, List<String>> getErrorsMap(List<String> errors) {
         Map<String, List<String>> errorResponse = new HashMap<>();

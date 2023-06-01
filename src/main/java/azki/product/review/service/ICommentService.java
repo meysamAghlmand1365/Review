@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ICommentService {
     List<CommentDto> fetchTopNComment(long productId, int limit);
@@ -19,4 +20,8 @@ public interface ICommentService {
     //GenericPageableList<Comment> fetchAllNotCheckedComment(BasePageableRequestDto dto);
 
     Page<CommentDto> fetchComment(Specification<Comment> specification, BasePageableRequestDto dto);
+
+
+
+    CommentDto updateComment(Long id, CommentDto commentDto);
 }

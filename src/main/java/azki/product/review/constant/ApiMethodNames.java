@@ -8,6 +8,8 @@ public class ApiMethodNames {
 
     public static final String  FETCH_NOT_CHECKED_COMMENT="/fetchNotCheckedComment";
 
+    public static final String  COMMENT="/comment";
+
 
 
 }

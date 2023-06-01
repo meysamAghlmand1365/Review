@@ -1,10 +1,12 @@
 package azki.product.review.service.impl;
 
+import azki.product.review.constant.ErrorMessage;
 import azki.product.review.dao.ICommentDao;
 import azki.product.review.dto.request.BasePageableRequestDto;
 import azki.product.review.dto.CommentDto;
 import azki.product.review.entity.Comment;
 import azki.product.review.service.ICommentService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,5 +53,18 @@ public class CommentServiceImpl implements ICommentService {
     public Page<CommentDto> fetchComment(Specification<Comment> specification, BasePageableRequestDto dto){
 
         return commentDao.findAll(Specification.where(specification),dto.getPageSize()>0?PageRequest.of( dto.getPageNum(),dto.getPageSize()):PageRequest.of(0,5)).map(a->modelMapper.map(a,CommentDto.class));
+    }
+
+
+
+    @Override
+    public CommentDto updateComment(Long id, CommentDto commentDto){
+        Optional<Comment> comment =commentDao.findById(id);
+        if(comment.isPresent()){
+            comment.get().setConfirmStatus(commentDto.getConfirmStatus());
+            return modelMapper.map(commentDao.saveAndFlush(comment.get()),CommentDto.class);
+        }else{
+          throw new EntityNotFoundException(ErrorMessage.ID+id.toString()+ ErrorMessage.NOT_FOUND);
+        }
     }
 }
