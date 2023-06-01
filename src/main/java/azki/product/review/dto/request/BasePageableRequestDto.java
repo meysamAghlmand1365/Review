@@ -1,13 +1,15 @@
-package azki.product.review.dto;
+package azki.product.review.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class BasePageableDto {
+@Setter
+public class BasePageableRequestDto {
     private int pageNum;
     private int pageSize=5;
 }

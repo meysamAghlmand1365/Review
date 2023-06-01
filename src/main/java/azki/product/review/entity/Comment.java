@@ -12,7 +12,7 @@ import java.time.LocalTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "product_id")
     private Long productId;

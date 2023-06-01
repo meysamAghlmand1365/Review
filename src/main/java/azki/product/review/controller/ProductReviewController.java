@@ -2,7 +2,9 @@ package azki.product.review.controller;
 
 
 import azki.product.review.constant.ApiMethodNames;
-import azki.product.review.dto.BasePageableDto;
+import azki.product.review.dto.CommentDto;
+import azki.product.review.dto.FetchCommentRequest;
+import azki.product.review.dto.request.BasePageableRequestDto;
 import azki.product.review.dto.GenericPageableList;
 import azki.product.review.dto.ProductDto;
 import azki.product.review.dto.request.RateCommentRequest;
@@ -25,13 +27,18 @@ public class ProductReviewController {
     private final IReviewService reviewService;
 
     @GetMapping(path = ApiMethodNames.FETCH_ALL_PRODUCTS)
-    public ResponseEntity<GenericPageableList<ProductDto>> fetchAllRepresentableProducts(@RequestBody BasePageableDto request){
+    public ResponseEntity<GenericPageableList<ProductDto>> fetchAllRepresentableProducts(@RequestBody BasePageableRequestDto request){
         return new ResponseEntity<>(reviewService.fetchAllRepresentableProducts(request), HttpStatus.OK);
     }
 
     @GetMapping(path = ApiMethodNames.FETCH_PRODUCT_REVIEW_DETAIL)
     public ResponseEntity<ProductReviewDetailResponse> fetchProductReviewDetail(@Valid @RequestBody  ReviewRequest request){
         return new ResponseEntity<>(reviewService.productReviewDetail(request), HttpStatus.OK);
+    }
+
+    @GetMapping(path = ApiMethodNames.FETCH_NOT_CHECKED_COMMENT)
+    public ResponseEntity<GenericPageableList<CommentDto>> fetchNotCheckedComment(@RequestBody FetchCommentRequest request){
+        return new ResponseEntity<>(reviewService.fetchNotCheckedComment(request), HttpStatus.OK);
     }
 
     @PostMapping(path = ApiMethodNames.REGISTER_COMMENT_AND_RATE)

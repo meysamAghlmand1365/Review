@@ -1,16 +1,20 @@
 package azki.product.review.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import azki.product.review.dto.response.BasePageableResponseDto;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class GenericPageableList<T> extends BasePageableDto {
+public class GenericPageableList<T> extends BasePageableResponseDto {
     List<T> responseList;
+
+    public GenericPageableList(List<T> responseList,int totalPage,long totalElement){
+        super(totalPage,totalElement);
+        this.responseList=responseList;
+    }
+
+
 }

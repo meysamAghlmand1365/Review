@@ -13,7 +13,7 @@ import java.time.LocalTime;
 public class Rate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "product_id")
     private Long productId ;

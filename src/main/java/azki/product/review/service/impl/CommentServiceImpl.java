@@ -1,12 +1,15 @@
 package azki.product.review.service.impl;
 
 import azki.product.review.dao.ICommentDao;
+import azki.product.review.dto.request.BasePageableRequestDto;
 import azki.product.review.dto.CommentDto;
 import azki.product.review.entity.Comment;
 import azki.product.review.service.ICommentService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,13 +22,13 @@ public class CommentServiceImpl implements ICommentService {
 
     private final ModelMapper modelMapper;
     @Override
-    public List<CommentDto> fetchTopNComment(long productId, int count){
-        return commentDao.fetchTopNComment(productId,count).stream().map(comment ->modelMapper.map(comment,CommentDto.class) ).collect(Collectors.toList());
+    public List<CommentDto> fetchTopNComment(long productId, int limit){
+        return commentDao.fetchTopNComment(productId,limit).stream().map(comment ->modelMapper.map(comment,CommentDto.class) ).collect(Collectors.toList());
     }
 
     @Override
-    public Long countAllConfirmedComment(){
-        return commentDao.countAllByConfirmStatusTrue();
+    public Long countAllConfirmedComment(Long productId){
+        return commentDao.countAllByConfirmStatusTrueAndProductIdIs(productId);
     }
 
 
@@ -34,5 +37,18 @@ public class CommentServiceImpl implements ICommentService {
         dto.setId(null);
         dto.setConfirmStatus(null);
         return commentDao.saveAndFlush(modelMapper.map(dto, Comment.class));
+    }
+
+   /* @Override
+    public GenericPageableList<Comment> fetchAllNotCheckedComment(BasePageableRequestDto dto){
+        return new GenericPageableList<>(commentDao.findAllByConfirmStatusIsNull(PageRequest.of(dto.getPageNum(), dto.getPageNum()))
+                .stream().map(a->modelMapper.map(a,Comment.class)).collect(Collectors.toList()));
+    }*/
+
+
+    @Override
+    public Page<CommentDto> fetchComment(Specification<Comment> specification, BasePageableRequestDto dto){
+
+        return commentDao.findAll(Specification.where(specification),dto.getPageSize()>0?PageRequest.of( dto.getPageNum(),dto.getPageSize()):PageRequest.of(0,5)).map(a->modelMapper.map(a,CommentDto.class));
     }
 }
