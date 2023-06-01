@@ -2,10 +2,13 @@ package azki.product.review.service.impl;
 
 import azki.product.review.constant.ErrorMessage;
 import azki.product.review.dao.ICommentDao;
+import azki.product.review.dto.request.FetchCommentRateRequest;
+import azki.product.review.dto.projection.CommentProductView;
 import azki.product.review.dto.request.BasePageableRequestDto;
 import azki.product.review.dto.CommentDto;
 import azki.product.review.entity.Comment;
 import azki.product.review.service.ICommentService;
+import azki.product.review.util.PageRequestBuilder;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -52,6 +55,13 @@ public class CommentServiceImpl implements ICommentService {
     public Page<CommentDto> fetchComment(Specification<Comment> specification, BasePageableRequestDto dto){
 
         return commentDao.findAll(Specification.where(specification),dto.getPageSize()>0?PageRequest.of( dto.getPageNum(),dto.getPageSize()):PageRequest.of(0,5)).map(a->modelMapper.map(a,CommentDto.class));
+    }
+
+    @Override
+    public Page<CommentProductView> fetchComment(FetchCommentRateRequest request){
+        return commentDao.fetchCommentProduct(request.getFromDate()!=null?request.getFromDate().toString():null,
+                                  request.getToDate()!=null?request.getToDate().toString():null,
+                                  PageRequestBuilder.buildPageRequest(request));
     }
 
 

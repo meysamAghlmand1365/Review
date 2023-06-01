@@ -1,7 +1,9 @@
 package azki.product.review.service;
 
 import azki.product.review.dto.CommentDto;
-import azki.product.review.dto.FetchCommentRequest;
+import azki.product.review.dto.projection.RateProductView;
+import azki.product.review.dto.request.FetchCommentRateRequest;
+import azki.product.review.dto.projection.CommentProductView;
 import azki.product.review.dto.request.BasePageableRequestDto;
 import azki.product.review.dto.GenericPageableList;
 import azki.product.review.dto.ProductDto;
@@ -18,5 +20,9 @@ public interface IReviewService {
     @Transactional
     boolean registerCommentAndRate(RateCommentRequest request);
 
-    GenericPageableList<CommentDto> fetchNotCheckedComment(FetchCommentRequest commentRequest);
+    GenericPageableList<CommentDto> fetchNotCheckedCommentt(FetchCommentRateRequest commentRequest);
+
+    GenericPageableList<CommentProductView> fetchNotCheckedComment(FetchCommentRateRequest commentRequest);
+
+    GenericPageableList<RateProductView> fetchNotCheckedRate(FetchCommentRateRequest request);
 }

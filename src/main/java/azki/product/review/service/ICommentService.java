@@ -1,14 +1,14 @@
 package azki.product.review.service;
 
+import azki.product.review.dto.request.FetchCommentRateRequest;
+import azki.product.review.dto.projection.CommentProductView;
 import azki.product.review.dto.request.BasePageableRequestDto;
 import azki.product.review.dto.CommentDto;
-import azki.product.review.dto.GenericPageableList;
 import azki.product.review.entity.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ICommentService {
     List<CommentDto> fetchTopNComment(long productId, int limit);
@@ -22,6 +22,7 @@ public interface ICommentService {
     Page<CommentDto> fetchComment(Specification<Comment> specification, BasePageableRequestDto dto);
 
 
+    Page<CommentProductView> fetchComment(FetchCommentRateRequest request);
 
     CommentDto updateComment(Long id, CommentDto commentDto);
 }

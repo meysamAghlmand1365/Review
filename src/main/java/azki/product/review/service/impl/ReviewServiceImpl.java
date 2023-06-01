@@ -3,7 +3,10 @@ package azki.product.review.service.impl;
 import azki.product.review.dao.IProductDao;
 import azki.product.review.dao.specification.CommentSpecifications;
 import azki.product.review.dto.*;
+import azki.product.review.dto.projection.CommentProductView;
+import azki.product.review.dto.projection.RateProductView;
 import azki.product.review.dto.request.BasePageableRequestDto;
+import azki.product.review.dto.request.FetchCommentRateRequest;
 import azki.product.review.dto.request.RateCommentRequest;
 import azki.product.review.dto.request.ReviewRequest;
 import azki.product.review.dto.response.ProductReviewDetailResponse;
@@ -12,6 +15,7 @@ import azki.product.review.service.ICommentService;
 import azki.product.review.service.IOrderService;
 import azki.product.review.service.IRateService;
 import azki.product.review.service.IReviewService;
+import azki.product.review.util.PageRequestBuilder;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -36,7 +40,7 @@ public class ReviewServiceImpl implements IReviewService {
 
     @Override
     public GenericPageableList<ProductDto> fetchAllRepresentableProducts(BasePageableRequestDto request){
-        Page<Product> pages =productDao.findProductsByRepresentableTrue(request!=null?PageRequest.of(request.getPageNum(),request.getPageSize()):PageRequest.of(0,5));
+        Page<Product> pages =productDao.findProductsByRepresentableTrue(PageRequestBuilder.buildPageRequest(request));
 
         return new GenericPageableList<>(pages.stream().map(product -> mapper.map(product, ProductDto.class)).collect(Collectors.toList()),pages.getTotalPages(),pages.getTotalElements());
 
@@ -90,12 +94,26 @@ public class ReviewServiceImpl implements IReviewService {
     }
 
     @Override
-    public GenericPageableList<CommentDto> fetchNotCheckedComment(FetchCommentRequest commentRequest){
+    public GenericPageableList<CommentDto> fetchNotCheckedCommentt(FetchCommentRateRequest commentRequest){
 
         Page<CommentDto> page=commentService.fetchComment(
                 CommentSpecifications.notChecked().
                 and(CommentSpecifications.fromDate(commentRequest.getFromDate())).
                 and(CommentSpecifications.toDate(commentRequest.getToDate())), commentRequest);
+        return new GenericPageableList<>(page.toList(),page.getTotalPages(), page.getTotalElements());
+    }
+
+    @Override
+    public GenericPageableList<CommentProductView> fetchNotCheckedComment(FetchCommentRateRequest commentRequest){
+
+        Page<CommentProductView> page=commentService.fetchComment(commentRequest);
+        return new GenericPageableList<>(page.toList(),page.getTotalPages(), page.getTotalElements());
+    }
+
+    @Override
+    public GenericPageableList<RateProductView> fetchNotCheckedRate(FetchCommentRateRequest request){
+
+        Page<RateProductView> page=rateService.fetchRate(request);
         return new GenericPageableList<>(page.toList(),page.getTotalPages(), page.getTotalElements());
     }
 

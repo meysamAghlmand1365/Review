@@ -3,9 +3,12 @@ package azki.product.review.service.impl;
 import azki.product.review.constant.ErrorMessage;
 import azki.product.review.dao.IRateDao;
 import azki.product.review.dto.RateDto;
+import azki.product.review.dto.projection.RateProductView;
 import azki.product.review.dto.request.BasePageableRequestDto;
+import azki.product.review.dto.request.FetchCommentRateRequest;
 import azki.product.review.entity.Rate;
 import azki.product.review.service.IRateService;
+import azki.product.review.util.PageRequestBuilder;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -41,8 +44,16 @@ public class RateServiceImpl implements IRateService {
     }
 
     @Override
-    public Page<RateDto> fetchComment(Specification<Rate> specification, BasePageableRequestDto dto){
-        return rateDao.findAll(Specification.where(specification),dto.getPageSize()>0? PageRequest.of( dto.getPageNum(),dto.getPageSize()):PageRequest.of(0,5)).map(a->modelMapper.map(a,RateDto.class));
+    public Page<RateDto> fetchRate(Specification<Rate> specification, BasePageableRequestDto dto){
+        return rateDao.findAll(Specification.where(specification),PageRequestBuilder.buildPageRequest(dto)).map(a->modelMapper.map(a,RateDto.class));
+    }
+
+
+    @Override
+    public Page<RateProductView> fetchRate(FetchCommentRateRequest request){
+        return rateDao.fetchRateProduct(request.getFromDate()!=null?request.getFromDate().toString():null,
+                request.getToDate()!=null?request.getToDate().toString():null,
+                PageRequestBuilder.buildPageRequest(request));
     }
 
     @Override
