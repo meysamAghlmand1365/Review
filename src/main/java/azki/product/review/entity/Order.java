@@ -18,7 +18,7 @@ public class Order {
     @Column(name = "order_status")
     private Byte orderStatus;
 
-    @Column(name = "createdDate")
+    @Column(name = "created_date")
     private LocalDate createdDate;
 
 

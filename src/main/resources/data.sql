@@ -9,6 +9,14 @@ INSERT INTO product_tbl (provider_id,name,description,representable,public_comme
 
 INSERT INTO user_tbl (username,password,first_name,last_name) VALUES ('ma_agh', '12345','meysam','aghlmand');
 INSERT INTO user_tbl (username,password,first_name,last_name) VALUES ('mh_dfc', '12345','hamid','torabi');
+INSERT INTO user_tbl (username,password,first_name,last_name) VALUES ('fgfdf_tuv', '3453','ali','hamidi');
+
+
+INSERT INTO order_tbl (user_id,order_status,created_date) VALUES (3, 1,'2021-09-17');
+INSERT INTO order_item_tbl (order_id,product_id,quantity) VALUES (1, 2,6);
+
+
+
 
 INSERT INTO rate_tbl (product_id,confirm_status,rate_number,user_id,created_date,created_time) VALUES (1, false,3,2, '2020-09-17' ,'17:45:52');
 INSERT INTO rate_tbl (product_id,confirm_status,rate_number,user_id,created_date,created_time) VALUES (1, true,3,2, '2020-09-17' ,' 19:47:52');
