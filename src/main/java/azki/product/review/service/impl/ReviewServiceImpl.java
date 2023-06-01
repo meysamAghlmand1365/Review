@@ -56,13 +56,9 @@ public class ReviewServiceImpl implements IReviewService {
             if(request.getUserId()!=null){
                 boolean existUserOrder=orderService.existUserOrderForProduct(request.getUserId(), request.getProductId());
 
-                if(!request.isPublicCommentActive()){
-                    response.setCommentAllowed(existUserOrder);
-                }
+                response.setCommentAllowed(request.isPublicCommentActive()||existUserOrder);
+                response.setRateAllowed(request.isPublicRateActive()||existUserOrder);
 
-                if(!request.isPublicRateActive()){
-                    response.setRateAllowed(existUserOrder);
-                }
             }
         }else{
             response.setCommentAllowed(true);
